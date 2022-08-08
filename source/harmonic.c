@@ -1062,6 +1062,7 @@ int harmonic_compute_cl(
         * transfer_ic1_temp
         * transfer_ic2_temp
         * factor;
+      //printf("clintegrand %g %g %g  %d %g \n",phr->l[index_l],k,cl_integrand[index_q*cl_integrand_num_columns+1+phr->index_ct_tt],phr->l[index_l],transfer_ic1_temp);
 
     if (phr->has_ee == _TRUE_)
       cl_integrand[index_q*cl_integrand_num_columns+1+phr->index_ct_ee]=

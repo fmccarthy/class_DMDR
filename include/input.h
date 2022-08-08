@@ -202,12 +202,21 @@
 /**
  * For shooting method: definition of the possible targets
  */
+/* JCH DDM modification: no shooting needed for DCDMDR quantities now, so remove here */
 
-enum target_names {theta_s, Omega_dcdmdr, omega_dcdmdr, Omega_scf, Omega_ini_dcdm, omega_ini_dcdm, sigma8};
+//enum target_names {theta_s, Omega_dcdmdr, omega_dcdmdr, Omega_scf, Omega_ini_dcdm, omega_ini_dcdm, sigma8};
 /* Important: Keep this number equal to the number of target_names */
-#define _NUM_TARGETS_ 7
+//#define _NUM_TARGETS_ 7
 /* Important: add one for each new target_names */
-enum computation_stage {cs_background, cs_thermodynamics, cs_perturbations, cs_primordial, cs_nonlinear, cs_transfer, cs_spectra};
+//enum computation_stage {cs_background, cs_thermodynamics, cs_perturbations, cs_primordial, cs_nonlinear, cs_transfer, cs_spectra};
+
+
+enum target_names {theta_s, Omega_scf, sigma8};
+enum computation_stage {cs_background, cs_thermodynamics, cs_perturbations,
+                        cs_primordial, cs_nonlinear, cs_transfer, cs_spectra};
+#define _NUM_TARGETS_ 3 //Keep this number as number of target_names
+
+
 
 /**
  * Structure for all temporary parameters for background fzero function

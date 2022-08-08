@@ -3088,6 +3088,8 @@ int transfer_compute_for_each_l(
                            * ptr->l_size[index_md] + index_l)
                           * ptr->q_size + index_q]
     = transfer_function;
+//  printf("got transfer %d  at %g %g %g\n",index_tt,l,k,transfer_function);
+
 
   return _SUCCESS_;
 

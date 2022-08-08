@@ -5,6 +5,9 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "math.h"
+/* JCH DDM modification */
+#include "gsl/gsl_sf_hyperg.h"
+#include "gsl/gsl_sf_gamma.h"
 #include "string.h"
 #include "float.h"
 #ifdef _OPENMP
