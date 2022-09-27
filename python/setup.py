@@ -13,7 +13,9 @@ GCCPATH_STRING = sbp.Popen(
     stdout=sbp.PIPE).communicate()[0]
 GCCPATH = osp.normpath(osp.dirname(GCCPATH_STRING)).decode()
 
-liblist = ["class"]
+# DMDR modification: added GSL/BLAS
+
+liblist = ["class", "gsl", "gslcblas"]
 MVEC_STRING = sbp.Popen(
     ['gcc', '-lmvec'],
     stderr=sbp.PIPE).communicate()[1]
@@ -37,10 +39,13 @@ with open(os.path.join(include_folder, 'common.h'), 'r') as v_file:
             break
 
 # Define cython extension and fix Python version
+# DMDR modification: add path to GSL/BLAS below in library_dirs
+# GSL stuff is also located in /cm/shared/sw/pkg-old/base/gsl/
+
 classy_ext = Extension("classy", [os.path.join(classy_folder, "classy.pyx")],
                            include_dirs=[nm.get_include(), include_folder, heat_folder, recfast_folder, hyrec_folder],
                            libraries=liblist,
-                           library_dirs=[root_folder, GCCPATH],
+                           library_dirs=[root_folder, GCCPATH,'/mnt/xfs1/flatiron-sw/pkg/base/gsl/2.3/lib64'],
                            extra_link_args=['-lgomp']
                        )
 import sys

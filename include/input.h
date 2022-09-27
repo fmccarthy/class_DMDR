@@ -202,7 +202,7 @@
 /**
  * For shooting method: definition of the possible targets
  */
-/* JCH DDM modification: no shooting needed for DCDMDR quantities now, so remove here */
+/* DM DR modification: no shooting needed for DCDMDR quantities now, so remove here */
 
 //enum target_names {theta_s, Omega_dcdmdr, omega_dcdmdr, Omega_scf, Omega_ini_dcdm, omega_ini_dcdm, sigma8};
 /* Important: Keep this number equal to the number of target_names */

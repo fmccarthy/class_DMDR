@@ -6,7 +6,7 @@
  */
 
 #include "input.h"
-/* JCH DDM modification */
+/* DMDR modification*/
 #include "gsl/gsl_sf_hyperg.h"
 #include "gsl/gsl_sf_gamma.h"
 
@@ -525,7 +525,7 @@ int input_shooting(struct file_content * pfc,
   int shooting_failed=_FALSE_;
 
 
-  /* JCH DDM modification: no shooting for DCDMDR-related quantities now needed, so remove here */
+  /* DMDR modification: no shooting for DCDMDR-related quantities now needed, so remove here */
 
   /* array of parameters passed by the user for which we need shooting (= target parameters) */
 //  char * const target_namestrings[] = {"100*theta_s",
@@ -798,7 +798,7 @@ int input_needs_shooting_for_target(struct file_content * pfc,
 
   *needs_shooting = _TRUE_;
   switch (target_name){
-  /* JCH DDM modification: no DCDMDR-related shooting */
+  /* DMDR modification: no DCDMDR-related shooting */
 
 //    case Omega_dcdmdr:
 //    case omega_dcdmdr:
@@ -1107,7 +1107,7 @@ int input_get_guess(double *xguess,
       ba.h = xguess[index_guess];
       ba.H0 = ba.h *  1.e5 / _c_;
       break;
-    /* JCH DDM modification: no DCDMDR-related shooting needed */
+    /* DMDR modification: no DCDMDR-related shooting needed */
 
 //    case Omega_dcdmdr:
  //     Omega_M = ba.Omega0_cdm+ba.Omega0_idm_dr+ba.Omega0_dcdmdr+ba.Omega0_b;
@@ -1156,7 +1156,7 @@ int input_get_guess(double *xguess,
         dxdy[index_guess] = 1.;
       }
       break;
-    /* JCH DDM modification: no DCDMDR-related shooting needed */
+    /* DMDR modification: no DCDMDR-related shooting needed */
 
 //    case omega_ini_dcdm:
 //      Omega0_dcdmdr = 1./(ba.h*ba.h);
@@ -1348,7 +1348,7 @@ int input_try_unknown_parameters(double * unknown_parameter,
     case theta_s:
       output[i] = 100.*th.rs_rec/th.ra_rec-pfzw->target_value[i];
       break;
-    /* JCH DDM modification: DCDMDR quantities are no longer shot for */
+    /* DMDR modification: DCDMDR quantities are no longer shot for */
 
 //    case Omega_dcdmdr:
 //      rho_dcdm_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dcdm];
@@ -2594,7 +2594,7 @@ int input_read_parameters_species(struct file_content * pfc,
   /** 7.1) Decaying DM into DR */
   /** 7.1.a) Omega_0_dcdmdr (DCDM, i.e. decaying CDM) */
   /* Read */
-  /* JCH DDM modification */
+  /* DMDR modification*/
   /* no longer allow the old parameterization to be used */
   /*class_call(parser_read_double(pfc,"Omega_dcdmdr",&param1,&flag1,errmsg),
              errmsg,
@@ -2638,7 +2638,7 @@ int input_read_parameters_species(struct file_content * pfc,
 
     /** 7.1.c) Gamma in same units as H0, i.e. km/(s Mpc)*/
     /* Read */
-    /* JCH DDM modification */
+    /* DMDR modification*/
     // Gamma is no longer a constant -- don't read in or use it
    // class_call(parser_read_double(pfc,"Gamma_dcdm",&param1,&flag1,errmsg),                          // [km/(s Mpc)]
    //            errmsg,
@@ -2674,7 +2674,7 @@ int input_read_parameters_species(struct file_content * pfc,
    // class_test(Omega_m_remaining < pba->Omega0_dcdmdr, errmsg, "Too much energy density from massive species. At this point only %e is left for Omega_m, but requested 'Omega_dcdmdr = %e'",Omega_m_remaining, pba->Omega0_dcdmdr);
   //  Omega_m_remaining-= pba->Omega0_dcdmdr;
  // }
-/* JCH DDM modification -- read in new parameterization */
+/* DMDR modification -- read in new parameterization */
   class_call(parser_read_double(pfc,"f_dcdm",&param1,&flag1,errmsg),                                                                        
              errmsg,                                                                                                                        
              errmsg);
@@ -5563,7 +5563,7 @@ int input_default_params(struct background *pba,
   /** 7.1.c) Decay constant */
   pba->Gamma_dcdm = 0.0;
   pba->tau_dcdm = 0.0;
-  /* JCH DDM modification (values here are meaningless and should not be used) */
+  /* DMDR modification(values here are meaningless and should not be used) */
   pba->f_dcdm = 0.0;
   pba->kappa_dcdm = 0.0;
   pba->a_t_dcdm = 1.0;

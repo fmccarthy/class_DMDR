@@ -1010,10 +1010,12 @@ cdef class Class:
         k : vector of k values, k[index_k] (in units of 1/Mpc by default, or h/Mpc when setting h_units to True)
         z : vector of z values, z[index_z]
         """
-
+        printf("inde %d %d %d \n",self.fo.k_size_pk,self.fo.ln_tau_size,self.fo.index_ln_tau_pk)
         cdef np.ndarray[DTYPE_t,ndim=2] pk = np.zeros((self.fo.k_size_pk, self.fo.ln_tau_size-self.fo.index_ln_tau_pk),'float64')
+        #cdef np.ndarray[DTYPE_t,ndim=2] pk = np.zeros((self.fo.k_size_pk, self.fo.ln_tau_size),'float64')
         cdef np.ndarray[DTYPE_t,ndim=1] k = np.zeros((self.fo.k_size_pk),'float64')
         cdef np.ndarray[DTYPE_t,ndim=1] z = np.zeros((self.fo.ln_tau_size-self.fo.index_ln_tau_pk),'float64')
+        #cdef np.ndarray[DTYPE_t,ndim=1] z = np.zeros((self.fo.ln_tau_size),'float64')
         cdef int index_k, index_tau, index_pk
         cdef double z_max_nonlinear, z_max_requested
 
@@ -1030,7 +1032,7 @@ cdef class Class:
             index_pk = self.fo.index_pk_cluster
         else:
             index_pk = self.fo.index_pk_total
-
+        #printf("inde %g %g",index_pk,index_pk)
         # get list of redshifts
         # the ln(times) of interest are stored in self.fo.ln_tau[index_tau]
         # with index_tau in the range:
@@ -1048,6 +1050,7 @@ cdef class Class:
                     z[index_tau] = self.z_of_tau(np.exp(self.fo.ln_tau[index_tau+self.fo.index_ln_tau_pk]))
 
         # check consitency of the list of redshifts
+        # DMDR modification: change CosmoSevereError-->CosmoComputationError
 
         if nonlinear == True:
             # Check highest value of z at which nl corrections could be computed.
@@ -1063,7 +1066,7 @@ cdef class Class:
             # If not, raise and error.
 
             if (self.fo.index_tau_min_nl > self.fo.tau_size - self.fo.ln_tau_size + self.fo.index_ln_tau_pk):
-                raise CosmoSevereError("get_pk_and_k_and_z() is trying to return P(k,z) up to z_max=%e (to encompass your requested maximum value of z); but the input parameters sent to CLASS (in particular ppr->nonlinear_min_k_max=%e) were such that the non-linear P(k,z) could only be consistently computed up to z=%e; increase the precision parameter 'nonlinear_min_k_max', or decrease your requested z_max"%(z_max_requested,self.pr.nonlinear_min_k_max,z_max_nonlinear))
+                raise CosmoComputationError("get_pk_and_k_and_z() is trying to return P(k,z) up to z_max=%e (to encompass your requested maximum value of z); but the input parameters sent to CLASS (in particular ppr->nonlinear_min_k_max=%e) were such that the non-linear P(k,z) could only be consistently computed up to z=%e; increase the precision parameter 'nonlinear_min_k_max', or decrease your requested z_max"%(z_max_requested,self.pr.nonlinear_min_k_max,z_max_nonlinear))
 
         # get list of k
 
@@ -1076,15 +1079,16 @@ cdef class Class:
             k[index_k] = self.fo.k[index_k]*units
 
         # get P(k,z) array
-
+        
         for index_tau in xrange(self.fo.ln_tau_size-self.fo.index_ln_tau_pk):
             for index_k in xrange(self.fo.k_size_pk):
                 if nonlinear == True:
                     pk[index_k, index_tau] = np.exp(self.fo.ln_pk_nl[index_pk][(index_tau+self.fo.index_ln_tau_pk) * self.fo.k_size + index_k])
                 else:
                     pk[index_k, index_tau] = np.exp(self.fo.ln_pk_l[index_pk][(index_tau+self.fo.index_ln_tau_pk) * self.fo.k_size + index_k])
+         
 
-        return pk, k, z
+        return pk, k, z#,self.fo.ln_tau_size,self.fo.index_ln_tau_pk  #, self.fo.ln_tau[0] ,np.exp(self.fo.ln_tau[0]),self.z_of_tau(np.exp(self.fo.ln_tau[0])),self.fo.ln_tau_size,self.fo.ln_tau[-1] ,np.exp(self.fo.ln_tau[-1]),self.z_of_tau(np.exp(self.fo.ln_tau[-1])),self.fo.index_ln_tau_pk
 
     #################################
     # Gives a grid of each transfer functions arranged in a dictionary, together with the vectors of corresponding k and z values
@@ -1424,6 +1428,17 @@ cdef class Class:
     def sigma8_cb(self):
         self.compute(["fourier"])
         return self.fo.sigma8[self.fo.index_pk_cb]
+    """
+    DMDR modification: add new parameters f_dcdm, kappa_dcdm, a_t_dcdm
+    """
+    def f_dcdm(self):
+        return self.ba.f_dcdm
+
+    def kappa_dcdm(self):
+        return self.ba.kappa_dcdm
+
+    def a_t_dcdm(self):
+        return self.ba.a_t_dcdm
 
     def rs_drag(self):
         self.compute(["thermodynamics"])
@@ -2227,6 +2242,9 @@ cdef class Class:
                 value = self.ba.age
             elif name == 'conformal_age':
                 value = self.ba.conformal_age
+            # DMDR modification: adding Omega_nu
+            elif name == 'Omega_nu':
+                value = self.ba.Omega0_ncdm_tot
             elif name == 'm_ncdm_in_eV':
                 value = self.ba.m_ncdm_in_eV[0]
             elif name == 'm_ncdm_tot':
@@ -2259,6 +2277,14 @@ cdef class Class:
                 value = self.th.rs_rec*self.ba.h
             elif name == 'ds_rec':
                 value = self.th.ds_rec
+           # DMDR modification: include new parameters f_dcdm, kappa_dcdm, a_t_dcdm
+            elif name == 'f_dcdm':
+                value = self.ba.f_dcdm
+            elif name == 'kappa_dcdm':
+                value = self.ba.kappa_dcdm
+            elif name == 'a_t_dcdm':
+                value = self.ba.a_t_dcdm
+
             elif name == 'ds_rec_h':
                 value = self.th.ds_rec*self.ba.h
             elif name == 'ra_rec':
