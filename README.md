@@ -27,11 +27,6 @@ To install the C code, clone this repository from the terminal and then do:
 To avoid conflicts with other builds of CLASS, it is recommended you do the above in a new 
 virtual environment. Note that you will need to have gsl installed and in your PATH.
 
-You might need to change your openmp flag in the Makefile, if you get an error; eg from 
--fopenmp to -openmp.
-
-
-
 To check that the code runs, do:
 
     ./class explanatory_DMDR.ini
@@ -46,6 +41,12 @@ To install the C code along with the python wrapper, do:
     
 You will need to have numpy and cython installed (along with gsl, as before); to run
 the python code, you will also need scipy.
+
+
+Currently the Makefile is set to run without openmp ; if you wish to run the code in 
+parallell, you can uncomment the relevant sections of the Makefile to run with openmp
+but you will need an appropriate gcc compiler (ie, not Clang)
+
 
 Support
 -----------------------------------
