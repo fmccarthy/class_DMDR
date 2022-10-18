@@ -24,4 +24,8 @@ To check that the code runs, type:
 
     ./class explanatory_DMDR.ini
 
+The DM-DR model
+-----------------------------------
 
+This model is a generalization of the decaying cold dark matter (DCDM) already implemented in CLASS.
+It was introduced in https://arxiv.org/abs/1803.03644. 
