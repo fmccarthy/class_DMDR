@@ -24,7 +24,7 @@ To check that the code runs, type:
 
     ./class explanatory_DMDR.ini
     
-There install the C code along with the python wrapper, do:
+To install the C code along with the python wrapper, do:
 
     cd class_DMDR
     make clean
