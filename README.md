@@ -37,7 +37,8 @@ To install the C code along with the python wrapper, do:
     make clean
     make 
     
-You will need to have numpy and cython installed (along with gsl, as before)
+You will need to have numpy and cython installed (along with gsl, as before); to run
+the python code, you will also need scipy.
 
 Support
 -----------------------------------
