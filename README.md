@@ -8,6 +8,13 @@ Julien Lesgourgues, Thomas Tram, Nils Schoeneberg; refer to the original reposit
 for the README of CLASS
 
 
+The DM-DR model
+-----------------------------------
+
+This model is a generalization of the decaying cold dark matter (DCDM) already implemented 
+in CLASS.
+It was introduced in https://arxiv.org/abs/1803.03644. 
+
 Compiling CLASS_DMDR and getting started
 -----------------------------------
 
@@ -32,9 +39,7 @@ To install the C code along with the python wrapper, do:
     
 You will need to have numpy and cython installed (along with gsl, as before)
 
-The DM-DR model
+Support
 -----------------------------------
 
-This model is a generalization of the decaying cold dark matter (DCDM) already implemented 
-in CLASS.
-It was introduced in https://arxiv.org/abs/1803.03644. 
+If you are having issues with the above, please feel free to email me at fiona.mccarthy0@gmail.com
