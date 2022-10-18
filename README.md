@@ -11,11 +11,11 @@ for the README of CLASS
 Compiling CLASS_DMDR and getting started
 -----------------------------------
 
-Clone this repository from the terminal and then do:
+To install the C code, clone this repository from the terminal and then do:
 
     cd class_DMDR
     make clean
-    make class
+    make 
 
 To avoid conflicts with other builds of CLASS, it is recommended you do the above in a new 
 virtual environment. Note that you will need to have gsl installed and in your path.
