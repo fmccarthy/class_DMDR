@@ -27,5 +27,6 @@ To check that the code runs, type:
 The DM-DR model
 -----------------------------------
 
-This model is a generalization of the decaying cold dark matter (DCDM) already implemented in CLASS.
+This model is a generalization of the decaying cold dark matter (DCDM) already implemented 
+in CLASS.
 It was introduced in https://arxiv.org/abs/1803.03644. 
