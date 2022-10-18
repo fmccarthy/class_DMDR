@@ -2842,6 +2842,11 @@ int input_read_parameters_species(struct file_content * pfc,
       if (flag6 == _TRUE_) {
       pba->kappa_dcdm = pow(10.0,param6);
       }
+
+      if (pba->kappa_dcdm==1.0) {
+      pba->kappa_dcdm = 0.99999;
+      }
+
       class_call(parser_read_double(pfc,"a_t_dcdm",&param2,&flag2,errmsg), errmsg, errmsg);
       class_call(parser_read_double(pfc,"log10a_t_dcdm",&param3,&flag3,errmsg), errmsg, errmsg);
       class_test(((flag2 == _TRUE_) && (flag3 == _TRUE_)),
