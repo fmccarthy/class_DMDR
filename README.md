@@ -47,6 +47,15 @@ Currently the Makefile is set to run without openmp ; if you wish to run the cod
 parallell, you can uncomment the relevant sections of the Makefile to run with openmp
 but you will need an appropriate gcc compiler (ie, not Clang)
 
+Usage
+-----------------------------------
+
+To run the C code, you need a .ini file like explanatory_DMDR.ini ; you can
+copy and edit this directly, and modify the parameters f_dcdm, a_t_dcdm, 
+and kappa_dcdm. 
+
+The code can also be run through the python wrapper; an example usage is in
+the notebook notebooks/DMDR_example.ipynb .
 
 Support
 -----------------------------------
