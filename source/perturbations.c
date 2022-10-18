@@ -5821,9 +5821,14 @@ int perturbations_initial_conditions(struct precision * ppr,
         ppw->pv->y[ppw->pv->index_pt_theta_idm] += k*k*alpha;
       }
       if (pba->has_dcdm == _TRUE_) {
-        /* DMDR modification: implement explicit time-dep. model here via Gamma */
+
+        /* DMDR modification */
+
+        /* Implement explicit time-dep. model here via Gamma */
 
         pba->Gamma_dcdm = ppw->pvecback[pba->index_bg_Gamma_dcdm];
+ 
+        /* End DMDR modification */
 
         ppw->pv->y[ppw->pv->index_pt_delta_dcdm] -= (3.*a_prime_over_a + a*pba->Gamma_dcdm)*alpha;
         ppw->pv->y[ppw->pv->index_pt_theta_dcdm] = k*k*alpha;
@@ -5858,9 +5863,13 @@ int perturbations_initial_conditions(struct precision * ppr,
         /* shear and l3 are gauge invariant */
 
         if (pba->has_dr == _TRUE_)
-          /* DMDR modification: implement explicit time-dep. model here via Gamma */
+          /* DMDR modification */
+
+	  /* Implement explicit time-dep. model here via Gamma */
           
           pba->Gamma_dcdm = ppw->pvecback[pba->index_bg_Gamma_dcdm];
+
+          /* End DMDR modification */
 
           delta_dr += (-4.*a_prime_over_a + a*pba->Gamma_dcdm*ppw->pvecback[pba->index_bg_rho_dcdm]/ppw->pvecback[pba->index_bg_rho_dr])*alpha;
 
@@ -7874,9 +7883,14 @@ int perturbations_sources(
 
     /* delta_dcdm */
     if (ppt->has_source_delta_dcdm == _TRUE_) {
-      /* DMDR modification: implement explicit time-dep. model here via Gamma */
+
+      /* DMDR modification */
+	    
+      /* Implement explicit time-dep. model here via Gamma */
       
       pba->Gamma_dcdm = ppw->pvecback[pba->index_bg_Gamma_dcdm];
+
+      /* End DMDR modification */
 
       _set_source_(ppt->index_tp_delta_dcdm) = y[ppw->pv->index_pt_delta_dcdm]
         + (3.*a_prime_over_a+a*pba->Gamma_dcdm)*theta_over_k2; // N-body gauge correction;
@@ -8466,9 +8480,14 @@ int perturbations_print_variables(double tau,
       }
 
       if (pba->has_dr == _TRUE_) {
-        /* DMDR modification: implement explicit time-dep. model here via Gamma */
+
+        /* DMDR modification */
+
+	/* Implement explicit time-dep. model here via Gamma */
      
         pba->Gamma_dcdm = ppw->pvecback[pba->index_bg_Gamma_dcdm];
+
+	/* End DMDR modification */
 
         delta_dr += (-4.*a*H+a*pba->Gamma_dcdm*pvecback[pba->index_bg_rho_dcdm]/pvecback[pba->index_bg_rho_dr])*alpha;
 
@@ -9320,9 +9339,14 @@ int perturbations_derivs(double tau,
     if (pba->has_dcdm == _TRUE_) {
 
       /** - ----> dcdm */
-      /* DMDR modification: implement explicit time-dep. model here via Gamma */
+
+      /* DMDR modification */
+
+      /* Implement explicit time-dep. model here via Gamma */
       
       pba->Gamma_dcdm = pvecback[pba->index_bg_Gamma_dcdm];
+
+      /* End DMDR modification */
 
       dy[pv->index_pt_delta_dcdm] = -(y[pv->index_pt_theta_dcdm]+metric_continuity)
         - a * pba->Gamma_dcdm / k2 * metric_euler; /* dcdm density */
@@ -9338,9 +9362,14 @@ int perturbations_derivs(double tau,
       /* f = rho_dr*a^4/rho_crit_today. In CLASS density units
          rho_crit_today = H0^2.
       */
-      /* DMDR modification: implement explicit time-dep. model here via Gamma */
+
+      /* DMDR modification */
+
+      /* Implement explicit time-dep. model here via Gamma */
      
       pba->Gamma_dcdm = pvecback[pba->index_bg_Gamma_dcdm];
+
+      /* End DMDR modification */
 
       f_dr = pow(pow(a,2)/pba->H0,2)*pvecback[pba->index_bg_rho_dr];
       fprime_dr = pba->Gamma_dcdm*pvecback[pba->index_bg_rho_dcdm]*pow(a,5)/pow(pba->H0,2);

@@ -113,9 +113,13 @@
  */
 
 #include "background.h"
-/* DMDR modification*/
+
+/* DMDR modification */
+
 #include "gsl/gsl_sf_hyperg.h"
 #include "gsl/gsl_sf_gamma.h"
+
+/* End DMDR modification */
 
 /**
  * Background quantities at given redshift z.
@@ -457,13 +461,16 @@ int background_functions(
   if (pba->has_dcdm == _TRUE_) {
     /* Pass value of rho_dcdm to output */
 
-    /* DMDR modification*/
+    /* DMDR modification */
+
     /* We no longer integrate rho_dcdm, we just use its analytical value 
      * so comment out the below and replace it with the analytical value */
 
     // pvecback[pba->index_bg_rho_dcdm] = pvecback_B[pba->index_bi_rho_dcdm];
 
     pvecback[pba->index_bg_rho_dcdm] = pba->Omega0_cdm * pow(pba->H0,2) / pow(a,3) * pba->f_dcdm *(1-pow(a,pba->kappa_dcdm))/(1+pow(a/pba->a_t_dcdm,pba->kappa_dcdm));
+
+    /* End DMDR modification */
 
     rho_tot += pvecback[pba->index_bg_rho_dcdm];
     p_tot += 0.;
@@ -475,7 +482,8 @@ int background_functions(
   if (pba->has_dr == _TRUE_) {
     /* Pass value of rho_dr to output */
 
-    /* DMDR modification*/
+    /* DMDR modification */
+
     /* We no longer integrate rho_dr, we just use its analytical value
      * so comment out the below and replace it with the analytical value*/
 
@@ -489,6 +497,7 @@ int background_functions(
       else
         pvecback[pba->index_bg_rho_dr] = pba->f_dcdm * pba->Omega0_cdm * pow(pba->H0,2) / pow(a,3) * (1.+pow(pba->a_t_dcdm,pba->kappa_dcdm))/(pow(a,pba->kappa_dcdm)+pow(pba->a_t_dcdm,pba->kappa_dcdm)) * ((pow(a,pba->kappa_dcdm)+pow(pba->a_t_dcdm,pba->kappa_dcdm)) * (pow(1./pow(a/pba->a_t_dcdm,pba->kappa_dcdm),1./pba->kappa_dcdm) * gsl_sf_gamma(1.-1./pba->kappa_dcdm) * gsl_sf_gamma(1.+1./pba->kappa_dcdm) + (-1. * gsl_sf_gamma(-1.+1./pba->kappa_dcdm) * gsl_sf_gamma(1.+1./pba->kappa_dcdm) / (gsl_sf_gamma(1./pba->kappa_dcdm)*gsl_sf_gamma(1./pba->kappa_dcdm)*(-1.*pow(a/pba->a_t_dcdm,pba->kappa_dcdm))))) - pow(pba->a_t_dcdm,pba->kappa_dcdm));
 
+    /* End DMDR modification */
 
     rho_tot += pvecback[pba->index_bg_rho_dr];
     p_tot += (1./3.)*pvecback[pba->index_bg_rho_dr];
@@ -623,7 +632,7 @@ int background_functions(
     pvecback[pba->index_bg_p_tot_prime] += pvecback[pba->index_bg_p_prime_scf];
   }
 
-  /* DMDR modification*/
+  /* DMDR modification */
  
   /* Gamma_dcdm, the time-dependent inverse lifetime of DM */
 
@@ -634,6 +643,8 @@ int background_functions(
     if (pvecback[pba->index_bg_Gamma_dcdm] / (pvecback[pba->index_bg_H]*pba->kappa_dcdm) >= 100.)
             pvecback[pba->index_bg_Gamma_dcdm]  = pvecback[pba->index_bg_H]*pba->kappa_dcdm * 100.;
   }
+
+  /* End DMDR modification */
 
   /** - compute critical density */
   rho_crit = rho_tot-pba->K/a/a;
@@ -1034,8 +1045,15 @@ int background_indices(
 
   if (pba->Omega0_dcdmdr != 0.) {
     pba->has_dcdm = _TRUE_;
-    /* DMDR modification: not using Gamma, replace with a_t (or kappa) */
-//    if (pba->Gamma_dcdm != 0.)
+
+    /* DMDR modification */
+    
+    /* Not using Gamma, replace with a_t (or kappa) */
+
+  //  if (pba->Gamma_dcdm != 0.)
+
+    /* End DMDR modification */    
+
   if (pba->a_t_dcdm != 0.)
     pba->has_dr = _TRUE_;
   }
@@ -1097,9 +1115,13 @@ int background_indices(
   /* - index for dcdm */
   class_define_index(pba->index_bg_rho_dcdm,pba->has_dcdm,index_bg,1);
 
-  /* DMDR modification*/
+  /* DMDR modification */
+
   /* - index for gamma_dcdm */
+
   class_define_index(pba->index_bg_Gamma_dcdm,pba->has_dcdm,index_bg,1);
+
+  /* End DMDR modification */
 
   /* - index for dr */
   class_define_index(pba->index_bg_rho_dr,pba->has_dr,index_bg,1);
@@ -1199,17 +1221,23 @@ int background_indices(
 
   /* -> energy density in DCDM */
 
-  /* DMDR modification*/
-  /* We no longer integrate rho_dcdm so comment out the below*/
+  /* DMDR modification */
+
+  /* We no longer integrate rho_dcdm so comment out the below */
 
   //class_define_index(pba->index_bi_rho_dcdm,pba->has_dcdm,index_bi,1);
 
+  /* End DMDR modification */
+
   /* -> energy density in DR */
  
-  /* DMDR modification*/
-  /* We no longer integrate rho_dr so comment out the below*/
+  /* DMDR modification */
+
+  /* We no longer integrate rho_dr so comment out the below */
 
   //class_define_index(pba->index_bi_rho_dr,pba->has_dr,index_bi,1);
+
+  /* End DMDR modification */
 
   /* -> energy density in fluid */
   class_define_index(pba->index_bi_rho_fld,pba->has_fld,index_bi,1);
@@ -2036,10 +2064,11 @@ int background_solve(
   pba->conformal_age = pvecback_integration[pba->index_bi_tau];
   /* -> contribution of decaying dark matter and dark radiation to the critical density today: */
 
-  /* DMDR modification*/
+  /* DMDR modification */
 
   /* we no longer have index_bi_rho_dcdm
    * so we must define this from index_bg_rho_dcdm */
+
   if (pba->has_dcdm == _TRUE_) {
    // pba->Omega0_dcdm = pvecback[pba->index_bg_rho_dcdm]/pba->H0/pba->H0;
     //pba->Omega0_dcdm = pvecback_integration[pba->index_bi_rho_dcdm]/pba->H0/pba->H0;
@@ -2048,9 +2077,13 @@ int background_solve(
     pba->Omega0_dcdm = 0.0;
   }
 
-  /* DMDR modification*/
+  /* End DMDR modification */
+
+  /* DMDR modification */
+
   /* we no longer have index_bi_rho_dr
    * so we must define this from index_bg_rho_dcdm */
+
   if (pba->has_dr == _TRUE_) {
   //  pba->Omega0_dr = pvecback_integration[pba->index_bi_rho_dr]/pba->H0/pba->H0;
       int rhodr_0;
@@ -2074,6 +2107,9 @@ int background_solve(
 
       pba->Omega0_dr = rhodr_0/pba->H0/pba->H0;  
   }
+
+  /* End DMDR modification */
+
   /* -> scale-invariant growth rate today */
   D_today = pvecback_integration[pba->index_bi_D];
 
@@ -2294,10 +2330,10 @@ int background_initial_conditions(
     rho_rad += rho_ncdm_rel_tot;
   }
 
-  /* DMDR modification*/
+  /* DMDR modification */
 
-  //We no longer integrate rho_dcdm, we get it analytically.
-  //So comment out the below as we no longer need to fill in pvecback_integration[pba->index_bi_rho_dcdm]
+  /* We no longer integrate rho_dcdm, we get it analytically.
+   * So comment out the below as we no longer need to fill in pvecback_integration[pba->index_bi_rho_dcdm] */
 
   //if (pba->has_dcdm == _TRUE_) {
   //  /* Remember that the critical density today in CLASS conventions is H0^2 */
@@ -2305,14 +2341,20 @@ int background_initial_conditions(
   //    pba->Omega_ini_dcdm*pba->H0*pba->H0*pow(a,-3);
   //
   
-  /* DMDR modification*/
-  /* : we never use Omega_ini_dcdm, so comment this out */
+  /* End DMDR modification */ 
+
+  /* DMDR modification */
+
+  /* we never use Omega_ini_dcdm, so comment this out */
+
   //if (pba->background_verbose > 3)
   //    printf("Density is %g. Omega_ini=%g\n",pvecback_integration[pba->index_bi_rho_dcdm],pba->Omega_ini_dcdm);
   //}
 
+  /* End DMDR modification */
 
-  /* DMDR modification*/
+  /* DMDR modification */
+
   /* We no longer integrate rho_dcdm, we get it analytically.
    * So comment out the below as we no longer need to define index_bi_rho_dr */
 
@@ -2333,7 +2375,9 @@ int background_initial_conditions(
    //   /** There is also a space reserved for a future case where dr is not sourced by dcdm */
    //   pvecback_integration[pba->index_bi_rho_dr] = 0.0;
    // }
- // }
+  // }
+
+  /* End DMDR modification */
 
   if (pba->has_fld == _TRUE_) {
 
@@ -2629,9 +2673,11 @@ int background_output_data(
     class_store_double(dataptr,pvecback[pba->index_bg_rho_dcdm],pba->has_dcdm,storeidx);
     class_store_double(dataptr,pvecback[pba->index_bg_rho_dr],pba->has_dr,storeidx);
 
-    /* DMDR modification*/
+    /* DMDR modification */
+
     class_store_double(dataptr,pvecback[pba->index_bg_Gamma_dcdm],pba->has_dcdm,storeidx);
     
+    /* End DMDR modification */
 
     class_store_double(dataptr,pvecback[pba->index_bg_rho_scf],pba->has_scf,storeidx);
     class_store_double(dataptr,pvecback[pba->index_bg_p_scf],pba->has_scf,storeidx);
@@ -2741,7 +2787,8 @@ int background_derivs(
   dy[pba->index_bi_D] = y[pba->index_bi_D_prime]/a/H;
   dy[pba->index_bi_D_prime] = -y[pba->index_bi_D_prime] + 1.5*a*rho_M*y[pba->index_bi_D]/H;
 
-  /* DMDR modification*/
+  /* DMDR modification */
+
   /*  we no longer integrate rhodcdm, we calculate it analytically 
    *  so comment out the below */
 
@@ -2750,15 +2797,20 @@ int background_derivs(
   //  dy[pba->index_bi_rho_dcdm] = -3.*y[pba->index_bi_rho_dcdm] - pba->Gamma_dcdm/H*y[pba->index_bi_rho_dcdm];
   // }
   
-  /* DMDR modification*/
-  /* we no longer integrate rhodr, we calculate it analytically 
-  * so comment out the below */
+  /* End DMDR modification */ 
+
+  /* DMDR modification */
+
+  /* We no longer integrate rhodr, we calculate it analytically 
+   * so comment out the below */
 
   //if ((pba->has_dcdm == _TRUE_) && (pba->has_dr == _TRUE_)) {
   //  /** - Compute dr density \f$ d\rho/dloga = -4\rho - \Gamma/H \rho \f$ */
     
   // dy[pba->index_bi_rho_dr] = -4.*y[pba->index_bi_rho_dr]+pba->Gamma_dcdm/H*y[pba->index_bi_rho_dcdm];
   // }
+  
+  /* End DMDR modification */
 
   if (pba->has_fld == _TRUE_) {
     /** - Compute fld density \f$ d\rho/dloga = -3 (1+w_{fld}(a)) \rho \f$ */

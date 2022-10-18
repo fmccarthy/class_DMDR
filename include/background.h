@@ -80,10 +80,12 @@ struct background
   double Omega0_idm_dr; /**< \f$ \Omega_{0 idm_dr} \f$: dark matter interacting with dark radiation */
 
   /* DMDR modification */
+
   double f_dcdm; /**< \f$ f_{dcdm} \f$: fraction of the initial CDM density comprised of decaying cold dark matter */
   double kappa_dcdm; /**< \f$ \zeta_{dcdm} \f$: rate parameter for decaying cold dark matter */
   double a_t_dcdm; /**< \f$ \Gamma_{dcdm} \f$: transition scale factor for decaying cold dark matter */
 
+  /* End DMDR modification */ 
 
   double Omega0_dcdmdr;   /**< \f$ \Omega_{0 dcdm}+\Omega_{0 dr} \f$: decaying cold dark matter (dcdm) decaying to dark radiation (dr) */
   double Omega_ini_dcdm;  /**< \f$ \Omega_{ini,dcdm} \f$: rescaled initial value for dcdm density (see 1407.2418 for definitions) */
@@ -186,8 +188,11 @@ struct background
   int index_bg_rho_dr;        /**< dr density */
 
   /* DMDR modification */
+
   /* Gamma_dcdm is time-dependent so we need to define an index for it */
   int index_bg_Gamma_dcdm;    /* inverse lifetime of DM */
+
+  /* End DMDR modification */ 
 
   int index_bg_phi_scf;       /**< scalar field value */
   int index_bg_phi_prime_scf; /**< scalar field derivative wrt conformal time */
@@ -267,12 +272,17 @@ struct background
    */
 
   //@{
+  
   /* DMDR modification */
+
   /* rho_dcdm and rho_dr are no longer {B}-variables as
      we can express them in terms of a. So comment them out here */
 
   //int index_bi_rho_dcdm;/**< {B} dcdm density */
   //int index_bi_rho_dr;  /**< {B} dr density */
+
+  /* End DMDR modification */
+
   int index_bi_rho_fld; /**< {B} fluid density */
   int index_bi_phi_scf;       /**< {B} scalar field value */
   int index_bi_phi_prime_scf; /**< {B} scalar field derivative wrt conformal time */

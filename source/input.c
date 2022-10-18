@@ -6,10 +6,13 @@
  */
 
 #include "input.h"
-/* DMDR modification*/
+
+/* DMDR modification */
+
 #include "gsl/gsl_sf_hyperg.h"
 #include "gsl/gsl_sf_gamma.h"
 
+/* End DMDR modification */ 
 
 /* The input module fills variables belonging to the structures of
    essentially all other modules. Thus we need to include all the
@@ -525,16 +528,18 @@ int input_shooting(struct file_content * pfc,
   int shooting_failed=_FALSE_;
 
 
-  /* DMDR modification: no shooting for DCDMDR-related quantities now needed, so remove here */
+  /* DMDR modification */
+ 
+  /* No shooting for DCDMDR-related quantities now needed, so remove here */
 
   /* array of parameters passed by the user for which we need shooting (= target parameters) */
-//  char * const target_namestrings[] = {"100*theta_s",
-//                                       "Omega_dcdmdr",
-//                                       "omega_dcdmdr",
-//                                       "Omega_scf",
-//                                       "Omega_ini_dcdm",
-//                                       "omega_ini_dcdm",
-//                                       "sigma8"};
+  //  char * const target_namestrings[] = {"100*theta_s",
+  //                                       "Omega_dcdmdr",
+  //                                       "omega_dcdmdr",
+  //                                       "Omega_scf",
+  //                                       "Omega_ini_dcdm",
+  //                                       "omega_ini_dcdm",
+  //                                       "sigma8"};
   char * const target_namestrings[] = {"100*theta_s",
                                        "Omega_scf",
                                        "sigma8"};
@@ -554,13 +559,16 @@ int input_shooting(struct file_content * pfc,
   /* for each target, module up to which we need to run CLASS in order
      to compute the targetted quantities (not running the whole code
      each time to saves a lot of time) */
- // enum computation_stage target_cs[] = {cs_thermodynamics, /* computation stage for target '100*theta_s' */
- //                                       cs_background,     /* computation stage for target 'Omega_dcdmdr' */
- //                                       cs_background,     /* computation stage for target 'omega_dcdmdr' */
- //                                       cs_background,     /* computation stage for target 'Omega_scf' */
- //                                       cs_background,     /* computation stage for target 'Omega_ini_dcdm' */
- //                                       cs_background,     /* computation stage for target 'omega_ini_dcdm' */
- //                                       cs_nonlinear};       /* computation stage for target 'sigma8' */
+  // enum computation_stage target_cs[] = {cs_thermodynamics, /* computation stage for target '100*theta_s' */
+  //                                       cs_background,     /* computation stage for target 'Omega_dcdmdr' */
+  //                                       cs_background,     /* computation stage for target 'omega_dcdmdr' */
+  //                                       cs_background,     /* computation stage for target 'Omega_scf' */
+  //                                       cs_background,     /* computation stage for target 'Omega_ini_dcdm' */
+  //                                       cs_background,     /* computation stage for target 'omega_ini_dcdm' */
+  //                                       cs_nonlinear};       /* computation stage for target 'sigma8' */
+  
+  /* End DMDR modification */
+
   enum computation_stage target_cs[] = {cs_thermodynamics, /* computation stage for target '100*theta_s' */
                                         cs_background,     /* computation stage for target 'Omega_scf' */
                                         cs_nonlinear};       /* computation stage for target 'sigma8' */
@@ -893,13 +901,18 @@ int input_needs_shooting_for_target(struct file_content * pfc,
 
   *needs_shooting = _TRUE_;
   switch (target_name){
-  /* DMDR modification: no DCDMDR-related shooting */
+  /* DMDR modification */
 
-//    case Omega_dcdmdr:
-//    case omega_dcdmdr:
+  /* No DCDMDR-related shooting */
+
+  //    case Omega_dcdmdr:
+  //    case omega_dcdmdr:
     case Omega_scf:
-//    case Omega_ini_dcdm:
-//    case omega_ini_dcdm:
+  //    case Omega_ini_dcdm:
+  //    case omega_ini_dcdm:
+  
+  /* End DMDR modification */ 
+
       /* Check that Omega's or omega's are nonzero: */
       if (target_value == 0.)
         *needs_shooting = _FALSE_;
@@ -1203,10 +1216,13 @@ int input_get_guess(double *xguess,
       ba.h = xguess[index_guess];
       ba.H0 = ba.h *  1.e5 / _c_;
       break;
-    /* DMDR modification: no DCDMDR-related shooting needed */
 
-//    case Omega_dcdmdr:
- //     Omega_M = ba.Omega0_cdm+ba.Omega0_idm_dr+ba.Omega0_dcdmdr+ba.Omega0_b;
+    /* DMDR modification */
+      
+    /* No DCDMDR-related shooting needed */
+
+  //    case Omega_dcdmdr:
+  //     Omega_M = ba.Omega0_cdm+ba.Omega0_idm_dr+ba.Omega0_dcdmdr+ba.Omega0_b;
       /* *
        * This formula is exact in a Matter + Lambda Universe, but only for Omega_dcdm,
        * not the combined.
@@ -1216,24 +1232,24 @@ int input_get_guess(double *xguess,
        *                       atanh(sqrt_one_minus_M)/sqrt_one_minus_M);
        * dxdy[index_guess] = 1.0;//exp(2./3.*ba.Gamma_dcdm/ba.H0*atanh(sqrt_one_minus_M)/sqrt_one_minus_M);
        * */
- //     gamma = ba.Gamma_dcdm/ba.H0;
- //     if (gamma < 1)
- //       a_decay = 1.0;
- //     else
- //       a_decay = pow(1+(gamma*gamma-1.)/Omega_M,-1./3.);
- //     xguess[index_guess] = pfzw->target_value[index_guess]/a_decay;
- //     dxdy[index_guess] = 1./a_decay;
- //     break;
- //   case omega_dcdmdr:
- //     Omega_M = ba.Omega0_cdm+ba.Omega0_idm_dr+ba.Omega0_dcdmdr+ba.Omega0_b;
- //     gamma = ba.Gamma_dcdm/ba.H0;
- //     if (gamma < 1)
- //       a_decay = 1.0;
- //     else
- //       a_decay = pow(1+(gamma*gamma-1.)/Omega_M,-1./3.);
- //     xguess[index_guess] = pfzw->target_value[index_guess]/ba.h/ba.h/a_decay;
- //     dxdy[index_guess] = 1./a_decay/ba.h/ba.h;
- //     break;
+  //     gamma = ba.Gamma_dcdm/ba.H0;
+  //     if (gamma < 1)
+  //       a_decay = 1.0;
+  //     else
+  //       a_decay = pow(1+(gamma*gamma-1.)/Omega_M,-1./3.);
+  //     xguess[index_guess] = pfzw->target_value[index_guess]/a_decay;
+  //     dxdy[index_guess] = 1./a_decay;
+  //     break;
+  //   case omega_dcdmdr:
+  //     Omega_M = ba.Omega0_cdm+ba.Omega0_idm_dr+ba.Omega0_dcdmdr+ba.Omega0_b;
+  //     gamma = ba.Gamma_dcdm/ba.H0;
+  //     if (gamma < 1)
+  //       a_decay = 1.0;
+  //     else
+  //       a_decay = pow(1+(gamma*gamma-1.)/Omega_M,-1./3.);
+  //     xguess[index_guess] = pfzw->target_value[index_guess]/ba.h/ba.h/a_decay;
+  //     dxdy[index_guess] = 1./a_decay/ba.h/ba.h;
+  //     break;
     case Omega_scf:
       /* *
        * This guess is arbitrary, something nice using WKB should be implemented.
@@ -1252,25 +1268,26 @@ int input_get_guess(double *xguess,
         dxdy[index_guess] = 1.;
       }
       break;
-    /* DMDR modification: no DCDMDR-related shooting needed */
 
-//    case omega_ini_dcdm:
-//      Omega0_dcdmdr = 1./(ba.h*ba.h);
-//    case Omega_ini_dcdm:
+  //    case omega_ini_dcdm:
+  //      Omega0_dcdmdr = 1./(ba.h*ba.h);
+  //    case Omega_ini_dcdm:
       /* This works since correspondence is Omega_ini_dcdm -> Omega_dcdmdr and
          omega_ini_dcdm -> omega_dcdmdr */
-//      Omega0_dcdmdr *=pfzw->target_value[index_guess];
-//      Omega_M = ba.Omega0_cdm+ba.Omega0_idm_dr+Omega0_dcdmdr+ba.Omega0_b;
-//      gamma = ba.Gamma_dcdm/ba.H0;
-//      if (gamma < 1)
-//        a_decay = 1.0;
-//      else
-//        a_decay = pow(1+(gamma*gamma-1.)/Omega_M,-1./3.);
-//      xguess[index_guess] = pfzw->target_value[index_guess]*a_decay;
-//      dxdy[index_guess] = a_decay;
-//      if (gamma > 100)
-//        dxdy[index_guess] *= gamma/100;
-//      break;
+  //      Omega0_dcdmdr *=pfzw->target_value[index_guess];
+  //      Omega_M = ba.Omega0_cdm+ba.Omega0_idm_dr+Omega0_dcdmdr+ba.Omega0_b;
+  //      gamma = ba.Gamma_dcdm/ba.H0;
+  //      if (gamma < 1)
+  //        a_decay = 1.0;
+  //      else
+  //        a_decay = pow(1+(gamma*gamma-1.)/Omega_M,-1./3.);
+  //      xguess[index_guess] = pfzw->target_value[index_guess]*a_decay;
+  //      dxdy[index_guess] = a_decay;
+  //      if (gamma > 100)
+  //        dxdy[index_guess] *= gamma/100;
+  //      break;
+  
+  /* End DMDR modification */ 
 
     case sigma8:
       /* Assume linear relationship between A_s and sigma8 and fix coefficient
@@ -1449,37 +1466,43 @@ int input_try_unknown_parameters(double * unknown_parameter,
     case theta_s:
       output[i] = 100.*th.rs_rec/th.ra_rec-pfzw->target_value[i];
       break;
-    /* DMDR modification: DCDMDR quantities are no longer shot for */
 
-//    case Omega_dcdmdr:
-//      rho_dcdm_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dcdm];
-//      if (ba.has_dr == _TRUE_)
-//        rho_dr_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dr];
-//      else
-//        rho_dr_today = 0.;
-//      output[i] = (rho_dcdm_today+rho_dr_today)/(ba.H0*ba.H0)-pfzw->target_value[i];
-//      break;
-//    case omega_dcdmdr:
-//      rho_dcdm_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dcdm];
-//      if (ba.has_dr == _TRUE_)
-//        rho_dr_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dr];
-//      else
-//        rho_dr_today = 0.;
-//      output[i] = (rho_dcdm_today+rho_dr_today)/(ba.H0*ba.H0)-pfzw->target_value[i]/ba.h/ba.h;
-//      break;
+    /* DMDR modification */
+
+    /* DCDMDR quantities are no longer shot for */
+
+  //    case Omega_dcdmdr:
+  //      rho_dcdm_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dcdm];
+  //      if (ba.has_dr == _TRUE_)
+  //        rho_dr_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dr];
+  //      else
+  //        rho_dr_today = 0.;
+  //      output[i] = (rho_dcdm_today+rho_dr_today)/(ba.H0*ba.H0)-pfzw->target_value[i];
+  //      break;
+  //    case omega_dcdmdr:
+  //      rho_dcdm_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dcdm];
+  //      if (ba.has_dr == _TRUE_)
+  //        rho_dr_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dr];
+  //      else
+  //        rho_dr_today = 0.;
+  //      output[i] = (rho_dcdm_today+rho_dr_today)/(ba.H0*ba.H0)-pfzw->target_value[i]/ba.h/ba.h;
+  //      break;
     case Omega_scf:
       /** In case scalar field is used to fill, pba->Omega0_scf is not equal to pfzw->target_value[i].*/
       output[i] = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_scf]/(ba.H0*ba.H0)-ba.Omega0_scf;
       break;
-//    case Omega_ini_dcdm:
-//    case omega_ini_dcdm:
-//      rho_dcdm_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dcdm];
-//      if (ba.has_dr == _TRUE_)
-//        rho_dr_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dr];
-//      else
-//        rho_dr_today = 0.;
-//      output[i] = -(rho_dcdm_today+rho_dr_today)/(ba.H0*ba.H0)+ba.Omega0_dcdmdr;
-//      break;
+  //    case Omega_ini_dcdm:
+  //    case omega_ini_dcdm:
+  //      rho_dcdm_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dcdm];
+  //      if (ba.has_dr == _TRUE_)
+  //        rho_dr_today = ba.background_table[(ba.bt_size-1)*ba.bg_size+ba.index_bg_rho_dr];
+  //      else
+  //        rho_dr_today = 0.;
+  //      output[i] = -(rho_dcdm_today+rho_dr_today)/(ba.H0*ba.H0)+ba.Omega0_dcdmdr;
+  //      break;
+  
+    /* End DMDR modification */      
+
     case sigma8:
       output[i] = fo.sigma8[fo.index_pk_m];
       break;
@@ -2703,7 +2726,9 @@ int input_read_parameters_species(struct file_content * pfc,
   /** 7.1) Decaying DM into DR */
   /** 7.1.a) Omega_0_dcdmdr (DCDM, i.e. decaying CDM) */
   /* Read */
-  /* DMDR modification*/
+
+  /* DMDR modification */
+
   /* no longer allow the old parameterization to be used */
   /*class_call(parser_read_double(pfc,"Omega_dcdmdr",&param1,&flag1,errmsg),
              errmsg,
@@ -2748,7 +2773,6 @@ int input_read_parameters_species(struct file_content * pfc,
 
     /** 7.1.c) Gamma in same units as H0, i.e. km/(s Mpc)*/
     /* Read */
-    /* DMDR modification*/
     // Gamma is no longer a constant -- don't read in or use it
    // class_call(parser_read_double(pfc,"Gamma_dcdm",&param1,&flag1,errmsg),                          // [km/(s Mpc)]
    //            errmsg,
@@ -2776,15 +2800,21 @@ int input_read_parameters_species(struct file_content * pfc,
    // class_test(pba->Gamma_dcdm<0.,
     //           errmsg,
      //          "You need to enter a decay constant for the decaying DM 'Gamma_dcdm > 0.'");
-//  }
+  //  }
   
 
 
   //if (has_m_budget == _TRUE_) {
    // class_test(Omega_m_remaining < pba->Omega0_dcdmdr, errmsg, "Too much energy density from massive species. At this point only %e is left for Omega_m, but requested 'Omega_dcdmdr = %e'",Omega_m_remaining, pba->Omega0_dcdmdr);
   //  Omega_m_remaining-= pba->Omega0_dcdmdr;
- // }
-/* DMDR modification -- read in new parameterization */
+  // }
+ 
+  /* End DMDR modification */ 
+ 
+  /* DMDR modification */
+
+  /* -read in new parameterization */
+
   class_call(parser_read_double(pfc,"f_dcdm",&param1,&flag1,errmsg),                                                                        
              errmsg,                                                                                                                        
              errmsg);
@@ -2823,6 +2853,8 @@ int input_read_parameters_species(struct file_content * pfc,
       if (flag3 == _TRUE_) {
       pba->a_t_dcdm = pow(10.0,param3);
       }
+
+      class_test((pba-> f_dcdm-1./(pow(pba->a_t_dcdm,pba->kappa_dcdm))>0),errmsg,"This combination of kappa_dcdm, a_t_dcdm, and f_Dcdm violates the physicality condition");
       /** Compute Omega0_dcdmdr and Omega_ini_dcdm */
       // by construction, the DCDM is fully gone at z=0 in this model
       //       // and we can explicitly compute the DR contribution
@@ -2846,10 +2878,11 @@ int input_read_parameters_species(struct file_content * pfc,
       else
         pba->Omega0_dcdmdr = (pba->f_dcdm * pba->Omega0_cdm * pow(pba->H0,2) / pow(1,3) * (1.+pow(pba->a_t_dcdm,pba->kappa_dcdm))/(pow(1,pba->kappa_dcdm)+pow(pba->a_t_dcdm,pba->kappa_dcdm)) * ((pow(1,pba->kappa_dcdm)+pow(pba->a_t_dcdm,pba->kappa_dcdm)) * (pow(1./pow(1/pba->a_t_dcdm,pba->kappa_dcdm),1./pba->kappa_dcdm) * gsl_sf_gamma(1.-1./pba->kappa_dcdm) * gsl_sf_gamma(1.+1./pba->kappa_dcdm) + (-1. * gsl_sf_gamma(-1.+1./pba->kappa_dcdm) * gsl_sf_gamma(1.+1./pba->kappa_dcdm) / (gsl_sf_gamma(1./pba->kappa_dcdm)*gsl_sf_gamma(1./pba->kappa_dcdm)*(-1.*pow(1/pba->a_t_dcdm,pba->kappa_dcdm))))) - pow(pba->a_t_dcdm,pba->kappa_dcdm))) / pba->H0 / pba->H0;
 
-      //printf("getting omega dcdm %g\n",pba->Omega0_dcdmdr);
 
     }
   }
+
+  /* End DMDR modification */ 
 
   /** 7.2) Multi-interacting dark matter (idm) */
   /** 7.2.1) Global parameters for all interacting Dark Matter components */
@@ -5832,10 +5865,16 @@ int input_default_params(struct background *pba,
   /** 7.1.c) Decay constant */
   pba->Gamma_dcdm = 0.0;
   pba->tau_dcdm = 0.0;
-  /* DMDR modification(values here are meaningless and should not be used) */
+
+  /* DMDR modification */
+  
+  /* Values here are meaningless and should not be used */
+
   pba->f_dcdm = 0.0;
   pba->kappa_dcdm = 0.0;
   pba->a_t_dcdm = 1.0;
+
+  /* End DMDR modification */ 
 
   /** 7.2) Interacting Dark Matter */
   /** 7.2.1.a) Current factional density of idm */
