@@ -18,7 +18,7 @@ Clone this repository from the terminal and then do:
     make class
 
 To avoid conflicts with other builds of CLASS, it is recommended you do the above in a new 
-virtual environment.
+virtual environment. Note that you will need to have gsl installed and in your path.
 
 To check that the code runs, type:
 
