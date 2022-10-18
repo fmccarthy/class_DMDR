@@ -11,14 +11,17 @@ for the README of CLASS
 Compiling CLASS_DMDR and getting started
 -----------------------------------
 
-Clone this repository and do 
+Clone this repository from the terminal and then do:
 
-make clean
-make class
+    cd class_DMDR
+    make clean
+    make class
 
-
+To avoid conflicts with other builds of CLASS, it is recommended you do the above in a new 
+virtual environment.
 
 To check that the code runs, type:
 
     ./class explanatory_DMDR.ini
+
 
