@@ -32,9 +32,11 @@ You might need to change your openmp flag in the Makefile, if you get an error, 
 
 
 
-To check that the code runs, type:
+To check that the code runs, do:
 
     ./class explanatory_DMDR.ini
+    
+If it runs with no error message, you have succeeded in installing the C code.
     
 To install the C code along with the python wrapper, do:
 
