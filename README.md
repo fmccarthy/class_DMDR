@@ -15,7 +15,7 @@ To install the C code, clone this repository from the terminal and then do:
 
     cd class_DMDR
     make clean
-    make 
+    make class
 
 To avoid conflicts with other builds of CLASS, it is recommended you do the above in a new 
 virtual environment. Note that you will need to have gsl installed and in your path.
