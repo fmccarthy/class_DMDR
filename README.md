@@ -23,6 +23,14 @@ virtual environment. Note that you will need to have gsl installed and in your p
 To check that the code runs, type:
 
     ./class explanatory_DMDR.ini
+    
+There install the C code along with the python wrapper, do:
+
+    cd class_DMDR
+    make clean
+    make 
+    
+You will need to have numpy and cython installed (along with gsl, as before)
 
 The DM-DR model
 -----------------------------------
