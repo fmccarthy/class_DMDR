@@ -1,21 +1,20 @@
 CLASS_DMDR: Cosmic Linear Anisotropy Solving System for the Dark Matter-> Dark Radiation Model
 ==============================================
 
-Authors: Colin Hill and Fiona McCarthy
+Authors: Colin Hill and Fiona McCarthy (jcolin.hill@gmail.com and fiona.mccarthy0@gmail.com)
 
-This is a fork of CLASS (https://lesgourg.github.io/class_public/class.html) by 
-Julien Lesgourgues, Thomas Tram, Nils Schoeneberg; refer to the original repository
-for the README of CLASS
+This is a fork of the Einstein-Boltzmann solver CLASS v3 (https://lesgourg.github.io/class_public/class.html), written by 
+Julien Lesgourgues, Thomas Tram, Nils Schoeneberg, et al.; refer to the original repository
+for the README of CLASS.
 
-All modifications to the original CLASS code are marked with a comment containing 'DMDR modification'.
+All modifications to the original CLASS code are marked with a comment in the code containing 'DMDR modification'.
 
 
 The DM-DR model
 -----------------------------------
 
-This model is a generalization of the decaying cold dark matter (DCDM) already implemented 
-in CLASS.
-It was introduced in https://arxiv.org/abs/1803.03644. 
+This model is a generalization of the decaying cold dark matter (DCDM) model already implemented 
+in CLASS.  The scenario was first introduced in Bringmann et al. (2018): https://arxiv.org/abs/1803.03644. 
 
 Compiling CLASS_DMDR and getting started
 -----------------------------------
@@ -47,7 +46,7 @@ the python code, you will also need scipy.
 
 Currently the Makefile is set to run without openmp ; if you wish to run the code in 
 parallell, you can uncomment the relevant sections of the Makefile to run with openmp
-but you will need an appropriate gcc compiler (ie, not Clang)
+but you will need an appropriate gcc compiler (i.e., not Clang).
 
 Usage
 -----------------------------------
