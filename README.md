@@ -7,7 +7,7 @@ This is a fork of CLASS (https://lesgourg.github.io/class_public/class.html) by
 Julien Lesgourgues, Thomas Tram, Nils Schoeneberg; refer to the original repository
 for the README of CLASS
 
-All modifications to the original CLASS code are marked with 'DMDR modification'.
+All modifications to the original CLASS code are marked with a comment containing 'DMDR modification'.
 
 
 The DM-DR model
