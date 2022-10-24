@@ -62,3 +62,12 @@ Support
 -----------------------------------
 
 If you are having issues with the above, please feel free to email me at fiona.mccarthy0@gmail.com
+
+Acknowledgments
+-----------------------------------
+
+This code has been checked by comparison to the modification to CAMB by Angela Chen:
+https://bitbucket.org/anqich/ddm-camb/src/master/
+
+We thank Angela Chen and Dragan Huterer for making this public and for correspondence
+about their code.
