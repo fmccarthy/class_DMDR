@@ -14,7 +14,8 @@ The DM-DR model
 -----------------------------------
 
 This model is a generalization of the decaying cold dark matter (DCDM) model already implemented 
-in CLASS.  The scenario was first introduced in Bringmann et al. (2018): https://arxiv.org/abs/1803.03644. 
+in CLASS.  The scenario was first introduced in Bringmann et al. (2018): https://arxiv.org/abs/1803.03644.
+We discussed it in detail in https://arxiv.org/abs/2210.14339
 
 Compiling CLASS_DMDR and getting started
 -----------------------------------
@@ -57,6 +58,8 @@ and kappa_dcdm.
 
 The code can also be run through the python wrapper; an example usage is in
 the notebook notebooks/DMDR_example.ipynb .
+
+If you use this code in a publication, please cite the paper https://arxiv.org/abs/2210.14339 .
 
 Support
 -----------------------------------
